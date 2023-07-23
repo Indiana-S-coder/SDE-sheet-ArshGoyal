@@ -1,0 +1,35 @@
+// Minimum window substring- medium - 23/07/2023
+
+class solution {
+   public static String smallestWindow(String s, String p)
+    {
+        int slen = s.length();
+        int plen = p.length();
+        if(slen < plen)return "-1";
+        int[] map = new int[128];
+        
+        for(char c : p.toCharArray()){
+            map[c]++;
+        }
+        int count = p.length();
+        int beg = 0, end = 0, min_length = Integer.MAX_VALUE,startidx = 0; 
+        char[] str = s.toCharArray(); 
+        
+        while(end < str.length){
+            if(map[str[end++]]-- > 0){
+                count--;
+            }
+            
+            while(count == 0){
+                if(end-beg < min_length){
+                    startidx = beg;
+                    min_length = end-beg;
+                }
+                if(map[str[beg++]]++ == 0){
+                    count++;
+                }
+            }
+        }
+        return min_length == Integer.MAX_VALUE ? "-1" : new String(str,startidx,min_length);
+    }
+}

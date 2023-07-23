@@ -1,0 +1,17 @@
+// Reverse words in a string - medium - 23/07/2023
+
+class Solution {
+    public String reverseWords(String s) {
+        String str = s.trim();
+        String[] arr = str.split("\\s+");
+        int n= arr.length;
+        
+        String ans = new String();
+        for(int i=n-1; i>0; i--){
+            ans+=arr[i]+" ";
+            
+        }
+        
+        return ans+arr[0];
+    }
+}

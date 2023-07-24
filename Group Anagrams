@@ -1,0 +1,16 @@
+// Group Anagrams - medium - 24/07/2023
+
+public List<List<String>> groupAnagrams(String[] strs){
+    Map<String, List<String>> map = new HashMap<>();
+
+    for(String s: strs){
+        char[] temp = s.toCharArray();
+        Arrays.sort(temp);
+        String sortStr = new String(temp);
+        if(!map.containsKey(sortStr)){
+          map.put(sortStr, new ArrayList<>());
+        }
+        map.get(sortStr).add(s);
+    }
+return new ArrayList<>(map.values());
+}

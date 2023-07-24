@@ -1,0 +1,28 @@
+// Basic Calculator - medium - 24/07/2023
+
+public int calculate(String s) {
+        if(s==null || s.isEmpty())return 0;
+        int n = s.length();
+        int currNum = 0, lastNum = 0, result = 0;
+        char operation = '+';
+        for(int i=0; i<n; i++){
+            char c = s.charAt(i);
+            if(Character.isDigit(c)){
+                currNum = (currNum)*10 + c-'0';
+            }
+            if(!Character.isDigit(c) && !Character.isWhitespace(c) || i==n-1){
+                if(operation == '+' || operation=='-'){
+                    result+=lastNum;
+                    lastNum = (operation=='+') ? currNum : -currNum;
+                }else if(operation == '*'){
+                    lastNum = lastNum*currNum;
+                }else if(operation == '/'){
+                    lastNum = lastNum/currNum;
+                }
+                operation = c;
+                currNum = 0;
+            }
+        }
+        result +=lastNum;
+        return result;
+    }

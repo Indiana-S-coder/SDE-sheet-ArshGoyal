@@ -1,0 +1,59 @@
+// Replace O's with X's - medium - 24/07/23
+
+class Solution{
+    static int[] dx = {1, -1, 0, 0};
+    static int[] dy = {0, 0, 1, -1};
+    static void dfs(char[][] a, int i, int j){
+        a[i][j] = 'O';
+        for(int k=0; k<4; k++){
+            int r=i+dx[k];
+            int c=j+dy[k];
+            if(r>=0 && r<a.length && c>=0 && c<a[0].length && a[r][c]=='-'){
+                a[r][c]='O';
+                dfs(a, r, c);
+            }
+        }
+    } 
+    static char[][] fill(int n, int m, char a[][])
+    {
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(a[i][j] == 'O'){
+                    a[i][j] = '-';
+                }
+            }
+        }
+        //left
+        for(int i=0; i<n; i++){
+            if(a[i][0] == '-'){
+                dfs(a, i, 0);
+            }
+        }
+        //top
+        for(int i=0; i<m; i++){
+            if(a[0][i] == '-'){
+                dfs(a, 0, i);
+            }
+        }
+        for(int i=0; i<n; i++){
+            if(a[i][m-1] == '-'){
+                dfs(a, i, m-1);
+            }
+        }
+        
+        for(int i=0; i<m; i++){
+            if(a[n-1][i] == '-'){
+                dfs(a, n-1, i);
+            }
+        }
+        
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(a[i][j] == '-'){
+                    a[i][j] = 'X';
+                }
+            }
+        }
+        return a;
+    }
+}

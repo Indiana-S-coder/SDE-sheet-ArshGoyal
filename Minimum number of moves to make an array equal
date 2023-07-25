@@ -1,0 +1,16 @@
+// Minimum number of moves to make an array equal - easy - 25/07/2023
+
+class Solution {
+    public int minMoves(int[] nums) {
+        int n= nums.length;
+        if(n == 1)return 0;
+        int sum = 0;
+        int min = Arrays.stream(nums).min().getAsInt();
+        for(int i:nums){
+            sum += (i-min);
+        }
+        return sum;
+    }
+}
+
+

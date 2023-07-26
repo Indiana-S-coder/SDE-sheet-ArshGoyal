@@ -1,0 +1,32 @@
+// kth factor of n - medium - 26/07/2023
+// Approach 1
+class Solution {
+    public int kthFactor(int n, int k) {
+        if((n==1) && k==n)return 1;
+        if((n==2 || n==3) && k==n)return k;
+        if(n==k)return -1;
+        ArrayList<Integer> list = new ArrayList<>();
+
+        for(int i=n; i>0; i--){
+            if(n%i == 0){
+                list.add(n/i);
+            }
+        }
+        return list.size() >= k ? list.get(k-1) : -1;
+    }
+}
+
+// Approach 2 - OPTIMIZED
+class Solution {
+    public int kthFactor(int n, int k) {
+        if(k==1) return 1;
+        k--;
+        for(int i = 2; i <= n; i++){
+            if(n%i==0) {
+                k--;
+                if(k==0) return i;
+            }
+        }
+        return -1;
+    }
+}

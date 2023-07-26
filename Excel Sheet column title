@@ -1,0 +1,17 @@
+// Excel sheet column title - medium - 26/07/2023
+
+class Solution {
+    public String convertToTitle(int columnNumber) {
+        
+        StringBuilder ans = new StringBuilder();
+        while(columnNumber>0){
+            columnNumber--;
+            
+            ans.append((char)((columnNumber)% 26 + 'A'));
+            
+            columnNumber/=26;
+        }
+        ans.reverse();
+        return ans.toString();
+    }
+}

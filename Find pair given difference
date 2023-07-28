@@ -1,0 +1,22 @@
+// Find pair given difference - easy - 28/07/2023
+
+class Solution
+{
+    public boolean findPair(int arr[], int size, int n)
+    {
+        Arrays.sort(arr);
+        int left = 0;
+        int right = 1;
+        while(left < size && right < size){
+            if(left != right && (arr[right]-arr[left] == n || arr[left]-arr[right] == n)){
+                return true;
+            }
+            if(arr[right]-arr[left] < n){
+                right++;
+            }else {
+                left++;
+            }
+        }
+        return false;
+    }
+}

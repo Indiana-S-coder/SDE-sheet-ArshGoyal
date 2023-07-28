@@ -1,0 +1,19 @@
+// Product array puzzel - medium - 28/07/2023
+
+class Solution 
+{ 
+	public static long[] productExceptSelf(int nums[], int n) 
+	{ 
+         long[] ans=new long[n];
+        ans[0]=1;
+        for(int i=1;i<n;i++){
+            ans[i]=nums[i-1]*ans[i-1];
+        }
+        long curr=1;
+        for(int i=n-1;i>=0;i--){
+            ans[i]*=curr;
+            curr*=nums[i];
+        }
+        return ans;
+	} 
+} 

@@ -1,0 +1,35 @@
+// Min number of swaps required to sort an array - hard - 29/07/2023
+
+class Solution
+{
+    //Function to find the minimum number of swaps required to sort the array.
+    public int minSwaps(int nums[])
+    {   
+        int swaps = 0;
+        int n = nums.length;
+        int[] temp = Arrays.copyOfRange(nums, 0, n);
+        
+        Map<Integer, Integer> map = new HashMap<>();
+        
+        for(int i=0; i<n; i++){
+            map.put(nums[i], i);
+        }
+        
+        Arrays.sort(temp);
+        for(int i=0; i<n; i++){
+            if(nums[i] != temp[i]){
+                int init = nums[i];
+                swaps++;
+                
+                int j = nums[i];
+                nums[i] = nums[map.get(temp[i])];
+                nums[map.get(temp[i])] = j;
+                
+                map.put(init, map.get(temp[i]));
+                map.put(temp[i], i);
+                
+            }
+        }
+        return swaps;
+    }
+}

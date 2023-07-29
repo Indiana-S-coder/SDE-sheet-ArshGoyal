@@ -1,0 +1,34 @@
+// Split array largest sum - hard - 29/07/2023
+
+class Solution {
+    private int countSplits(int[] nums, int sum){
+        int splits = 1;
+        int splitSum = 0;
+        for(int i=0; i<nums.length; i++){
+            if(splitSum + nums[i] <= sum){
+                splitSum += nums[i];
+            }else {
+                splits++;
+                splitSum = nums[i];
+            }
+        }
+        return splits;
+    }
+    public int splitArray(int[] nums, int k) {
+        int left = 0;
+        int right = 0;
+        for(int num : nums){
+            left = Math.max(left, num);
+            right += num;
+        }
+        while(left < right){
+            int mid = left + (right - left) / 2;
+            if(countSplits(nums, mid) <= k) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+}

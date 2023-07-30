@@ -1,0 +1,13 @@
+// Convert binary number in a linked list to integer - easy - 30/07/2023
+
+public int getDecimalValue(ListNode head) {
+        int decimal = head.val;
+        
+        while(head.next!=null ){
+            
+            decimal = (decimal<<1) | head.next.val;
+            head = head.next;
+            
+        }
+        return decimal;
+    }

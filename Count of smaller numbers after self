@@ -1,0 +1,42 @@
+// Count of smaller numbers after self - hard - 30/07/2023
+
+class Solution {
+    private int binarySearch(ArrayList<Integer> arr, int key){
+        int low = 0;
+        int high = arr.size();
+
+        while(low < high){
+            int mid = low + (high-low)/2;
+            if(arr.get(mid) < key){
+                low = mid + 1;
+            }else {
+                high = mid;
+            }
+        }
+        return low;
+    }
+    public List<Integer> countSmaller(int[] nums) {
+        int n = nums.length;
+
+        List<Integer> count = new ArrayList<>();
+
+        if(n == 1){
+            count.add(0);
+            return count;
+        }
+        ArrayList<Integer> arr = new ArrayList<>();
+
+        for(int i:nums){
+            arr.add(i);
+        }
+        Collections.sort(arr);
+
+        for(int i=0; i<n; i++){
+            int pos = binarySearch(arr, nums[i]);
+            count.add(pos);
+            arr.remove(pos);  
+        }
+
+        return count;
+    }
+}

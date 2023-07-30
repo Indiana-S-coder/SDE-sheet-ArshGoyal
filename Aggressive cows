@@ -1,0 +1,36 @@
+Aggressive cows - hard - 30/07/2023
+
+class Solution {
+    private static int countCows(int[] stalls, int dist){
+        int cows = 1;
+        int minDist = stalls[0];
+        
+        for(int i=1; i<stalls.length; i++){
+            if(stalls[i]-minDist >= dist){
+                cows++;
+                minDist = stalls[i];
+            }
+        }
+        return cows;
+    }
+    public static int solve(int n, int k, int[] stalls) {
+        Arrays.sort(stalls);
+        
+        int result = 0;
+       
+        int left = 0;
+        int right = stalls[n-1]-stalls[0];
+        
+        while(left <= right){
+            int mid = left + (right-left)/2;
+            
+            if(countCows(stalls, mid) >= k){
+                result = mid;
+                left = mid+1;
+            }else {
+                right = mid - 1;
+            }
+        }
+        return result;
+    }
+}

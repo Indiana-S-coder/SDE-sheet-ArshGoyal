@@ -1,0 +1,78 @@
+// Add two numbers II - medium - 01/08/2023
+
+// Approach 1 - by reversing ll
+class Solution {
+    private ListNode reverse(ListNode node){
+     
+        ListNode prev = null;
+        ListNode next;
+
+        while(node != null){
+            next = node.next;
+            node.next = prev;
+            prev = node;
+            node = next;
+        }
+        return prev;
+    }
+
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode ans = new ListNode();
+        int sum = 0;
+        int carry = 0;
+        ListNode r1 = reverse(l1);
+        ListNode r2 = reverse(l2);
+        while(r1!=null || r2!= null){
+            if(r1 != null) sum += r1.val;
+            if(r2 != null) sum += r2.val;
+            
+            ans.val = sum % 10;
+            carry = (sum)/10;
+       
+            ListNode head = new ListNode(carry);
+            head.next = ans;
+            ans = head;
+            sum = carry;
+            r1 = r1 != null ? r1.next : null;
+            r2 = r2 != null ? r2.next : null;
+        }
+        
+        return carry == 0? ans.next: ans;
+    }
+}
+
+// Approach 2 - using stack
+
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        Stack<Integer> s1 = new Stack<>();
+        Stack<Integer> s2 = new Stack<>();
+
+        while(l1 != null){
+            s1.push(l1.val);
+            l1 = l1.next;
+        }
+        while(l2 != null){
+            s2.push(l2.val);
+            l2 = l2.next;
+        }
+        int totalsum = 0;
+        int carry = 0;
+        ListNode ans = new ListNode();
+        while(!s1.isEmpty() || !s2.isEmpty()){
+            if(!s1.isEmpty())totalsum += s1.pop();
+            if(!s2.isEmpty())totalsum += s2.pop();
+
+            ans.val = (totalsum % 10);
+            carry = totalsum / 10;
+            ListNode newNode = new ListNode(carry);
+            newNode.next = ans;
+            ans = newNode;
+            totalsum = carry;
+        }
+        if(carry == 0){
+            return ans.next;
+        }
+        return ans;
+    }
+}

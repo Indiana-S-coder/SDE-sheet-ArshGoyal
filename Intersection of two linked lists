@@ -1,5 +1,6 @@
 // Intersection of two linked lists - medium - 01/08/2023
 
+// approach without caring about length of both
 public class Solution {
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
         
@@ -13,3 +14,22 @@ public class Solution {
         return tempA;
     }
 }
+
+// using hashset - approach
+
+public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        
+        Set<ListNode> set = new HashSet<>();
+        while(headA != null){
+            set.add(headA);
+            headA = headA.next;
+        }
+
+        while(headB != null){
+            if(set.contains(headB)){
+                return headB;
+            }
+            headB = headB.next;
+        }
+        return null;
+    }

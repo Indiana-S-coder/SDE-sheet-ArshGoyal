@@ -1,0 +1,70 @@
+// Clone a linked list with random pointers - medium - 02/08/2023
+
+// Approach 1 - using map
+
+public Node copyRandomList(Node head) {
+        Map<Node, Node> map = new HashMap<>();
+        Node nHead = new Node(-1);
+        Node temp = nHead;
+        Node curr = head;
+
+        while(curr != null){
+            Node node = new Node(curr.val);
+            temp.next = node;
+            map.put(curr, node);
+            temp = temp.next;
+            curr = curr.next;
+        }
+        nHead = nHead.next;
+        Node c1 = head;
+        Node c2 = nHead;
+
+        while(c1 != null){
+            c2.random = (c1.random != null ? map.get(c1.random): null);
+            c2 = c2.next;
+            c1 = c1.next;
+        }
+        return nHead;
+    }
+
+// Approach 2 - without using map
+
+ublic Node copyRandomList(Node head) {
+        
+        Node curr = head, next;
+        // 1st step: make copy of original list and linke them together side-by-side in a 
+        // single list
+        while(curr != null){
+            next = curr.next;
+            Node node = new Node(curr.val);
+            curr.next = node;
+            node.next = next;
+            curr = next;
+        }
+        
+        curr = head;
+        // 2nd step: assign random pointers for the clone nodes
+        while(curr != null){
+            if(curr.random != null){
+                curr.next.random = curr.random.next;
+            }
+            curr = curr.next.next;
+        }
+
+        // 3rd step: restore the original list, and extract the copy list
+        curr = head;
+        Node nHead = new Node(0);
+        Node copy, temp = nHead;
+
+        while(curr != null){
+            next = curr.next.next;
+            // extract the copy
+            copy = curr.next;
+            temp.next = copy;
+            temp = copy;
+            //restore the original list
+            curr.next = next;
+            curr = next;
+        }
+        return nHead.next;
+    }

@@ -1,0 +1,22 @@
+// Remove duplicate from sorted list II - medium - 02/08/2023
+
+public ListNode deleteDuplicates(ListNode head) {
+        if(head == null || head.next == null)return head;
+
+        ListNode prev = new ListNode();
+        prev.next = head;
+        ListNode curr = prev;
+        while( curr.next!=null && curr.next.next != null){
+            
+            if(curr.next.val == curr.next.next.val){
+                int var = curr.next.val;
+                while(curr.next != null && curr.next.val == var){
+                    curr.next = curr.next.next;
+                }
+            }else {
+                curr = curr.next;
+            }
+
+        }
+        return prev.next;
+    }

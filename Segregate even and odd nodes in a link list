@@ -1,0 +1,28 @@
+// Segregate even and odd in a link list - medium - 03/08/2023
+
+Node divide(int N, Node head){
+        
+        if(head == null || head.next == null)return head;
+        
+        Node odd = new Node(-1);
+        Node even = new Node(-1);
+        Node oddHead = odd;
+        Node evenHead = even;
+        
+        while(head != null){
+            if(head.data%2 == 0){
+                evenHead.next = head;
+                evenHead = evenHead.next;
+            }
+            else {
+                oddHead.next = head;
+                oddHead = oddHead.next;
+            }
+            head = head.next;
+        }
+        
+        oddHead.next = null;
+        evenHead.next = odd.next;
+        
+        return even.next;
+}

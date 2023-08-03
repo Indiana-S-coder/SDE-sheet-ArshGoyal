@@ -1,0 +1,59 @@
+// Partition list - medium - 03/08/2023
+
+// Approach 1 - extra space
+
+public ListNode partition(ListNode head, int x) {
+        if(head == null || head.next==null){
+            return head;
+        }
+
+        ListNode temp = new ListNode();
+        ListNode ans = temp;
+        ListNode curr = head;
+
+        while(curr != null){
+            if(curr.val < x){
+                temp.next = new ListNode(curr.val);
+                temp = temp.next;
+            }
+            curr = curr.next;
+        }
+        curr = head;
+        while(curr != null){
+            if(curr.val >= x){
+                temp.next = new ListNode(curr.val);
+                temp = temp.next;
+            }
+            curr = curr.next;
+        }
+        temp.next = null;
+        return ans.next;
+}
+
+// Approach 2 - no extra space
+
+public ListNode partition(ListNode head, int x) {
+        if(head == null || head.next==null){
+            return head;
+        }
+        
+        ListNode left = new ListNode(0);
+        ListNode right = new ListNode(0);
+
+        ListNode leftt= left;
+        ListNode rightt = right;
+        while(head != null){
+            if(head.val < x){
+                leftt.next = head;
+                leftt = leftt.next;
+            }
+            else{
+                rightt.next = head;
+                rightt = rightt.next;
+            }
+            head = head.next;
+        }
+        leftt.next = right.next;
+        rightt.next = null;
+        return left.next;
+}

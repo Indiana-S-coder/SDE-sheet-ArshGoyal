@@ -1,0 +1,36 @@
+// Rearrange linked list in place - medium - 03/08/2023
+
+public static Node rearrange(Node root)
+    {
+        Node fast = root;
+        Node slow = root;
+        
+        while(fast != null && fast.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        
+        Node prev = null;
+        Node curr = slow.next;
+        slow.next = null;
+        Node next;
+        
+        while(curr != null){
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        slow = root;
+        Node temp;
+        while(prev!=null && slow != null){
+            next = slow.next;
+            slow.next = prev;
+            temp = prev.next;
+            prev.next = next;
+            slow = next;
+            prev = temp;
+        }
+        
+        return root;
+    }

@@ -1,0 +1,58 @@
+// Flatten a multilayer linked list - medium - 03/08/2023
+
+// Approach 1 - iterative
+public Node flatten(Node head) {
+        Node temp = head;
+        Stack<Node> stack = new Stack<>();
+        while(temp != null){
+            
+            if(temp.child != null){
+                // if current node has a child, then add the next node to the stack
+                if(temp.next!=null)stack.add(temp.next);// this is to include boundary case if only the last node of 1st layer has child
+                // point the next node to the child
+                temp.next = temp.child;
+                // remove the child's pointer
+                temp.child = null;    
+            }
+            // Determine which is next node, if reached to the end of the curr list
+            // and stack is not empty, then pop the latest node to be the next 
+            Node next = (temp.next == null && !stack.isEmpty()) ? stack.pop(): temp.next;
+            if(next != null){
+                // make sure all the pointers are correct
+                next.prev = temp;
+                temp.next = next;
+            }
+            temp = next;  
+        }
+
+        return head;
+}
+
+// Approach 2 - recursive
+
+private Node findTail(Node child){
+        while(child.next != null){
+            child = child.next;
+        }
+        return child;
+    }
+    public Node flatten(Node head) {
+        Node temp = head;
+        Stack<Node> stack = new Stack<>();
+        while(temp != null){
+            
+            if(temp.child != null){
+                Node tail = findTail(temp.child);
+                if(temp.next != null){
+                    temp.next.prev = tail;
+                }
+                tail.next = temp.next;
+                temp.next = temp.child;
+                temp.child.prev = temp;
+                temp.child = null;
+            }
+            temp = temp.next;  
+        }
+
+        return head;
+    }

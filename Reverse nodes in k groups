@@ -1,0 +1,41 @@
+// Reverse nodes in k groups - hard - 04/08/2023
+
+public ListNode reverse(ListNode head, int k, int len){
+  // base case
+        if(head == null || head.next == null || k == 1 || len < k){
+            return head;
+        }
+
+        int count = 0;
+        
+        ListNode prev = null;
+        ListNode temp = head;
+        ListNode next = null;
+  
+// reverse first k nodes
+        while(temp != null && (count < k))
+        {
+            next = temp.next;
+            temp.next = prev;
+            prev = temp;
+            temp = next;
+            count++;
+        }
+  // reverse next k nodes
+        if(next != null){
+            head.next = reverse(next, k, len-k);
+        }
+    // return the head of reversed linked list  
+        return prev;
+    }
+    public ListNode reverseKGroup(ListNode head, int k) {
+        int len = 0;
+        ListNode curr = head;
+
+        while(curr != null){
+            len++;
+            curr = curr.next;
+        }
+
+        return reverse(head, k, len);
+    }

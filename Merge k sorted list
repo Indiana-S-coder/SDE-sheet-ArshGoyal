@@ -1,0 +1,87 @@
+Merge k sorted list - hard - 04/08/2023
+
+// Approach 1 - brute force
+
+private ListNode merge(ListNode l1, ListNode l2){
+        
+        ListNode temp = new ListNode(-1);
+        ListNode dummy = temp;
+
+        while(l1 != null && l2 != null){
+            if(l1.val <= l2.val){
+                temp.next = new ListNode(l1.val, null);
+                temp = temp.next;
+                l1 = l1.next;
+            }
+            else {
+                temp.next = new ListNode(l2.val, null);
+                temp = temp.next;
+                l2 = l2.next;
+            }
+        }
+            while(l1 != null){
+                temp.next = new ListNode(l1.val , null);
+                temp = temp.next;
+                l1 = l1.next;
+            }
+
+            while(l2 != null){
+                temp.next = new ListNode(l2.val, null);
+                temp = temp.next;
+                l2 = l2.next;
+            }
+
+        return dummy.next;
+    }
+    public ListNode mergeKLists(ListNode[] lists) {
+        if(lists.length == 0){
+            return null;
+        }
+
+        ListNode ans = null;
+        //ListNode temp = ans;
+
+        for(int i=0; i<lists.length; i++){
+            ans = merge(lists[i], ans);
+        }
+
+        return ans;
+}
+
+// Approach 2 - recursion - merge sort
+
+public ListNode merge(ListNode l1, ListNode l2){
+        if(l1 == null)return l2;
+
+        if(l2 == null)return l1;
+
+        if(l1.val < l2.val){
+            l1.next = merge(l1.next, l2);
+            return l1;
+        }
+        else {
+            l2.next = merge(l1, l2.next);
+            return l2;
+        }
+
+    }
+    public ListNode partitionList(int start, int end, ListNode[] lists){
+        if(start > end) return null;
+        
+        if(start == end) return lists[start];
+
+        int mid = start + (end - start)/2;
+
+        ListNode left = partitionList(start, mid, lists);
+        ListNode right = partitionList(mid+1, end, lists);
+
+        return merge(left, right);
+    }
+
+    public ListNode mergeKLists(ListNode[] lists) {
+        if(lists.length == 0){
+            return null;
+        }
+
+        return partitionList(0, lists.length-1, lists);
+}

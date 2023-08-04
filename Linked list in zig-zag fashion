@@ -1,0 +1,31 @@
+Linked list in zig-zag fashion - medium - 04/08/2023
+
+public static Node zigZag(Node head){
+       if(head==null || head.next==null){
+           return head;
+       }
+       
+       Node curr = head;
+       boolean flag = true;
+       
+       while(curr.next != null){
+           if(flag){
+               if(curr.data > curr.next.data){
+                   int temp = curr.data;
+                   curr.data = curr.next.data;
+                   curr.next.data = temp;
+               }
+               flag = !flag;
+           }
+           else {
+               if(curr.data < curr.next.data){
+                   int temp = curr.data;
+                   curr.data = curr.next.data;
+                   curr.next.data = temp;
+               }
+               flag = !flag;
+           }
+           curr = curr.next;
+       }
+       return head;
+    }

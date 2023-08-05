@@ -1,0 +1,32 @@
+// Evaluation of postfix expression - easy - 05/08/2023
+
+public static int evaluatePostFix(String S)
+    {
+        Stack<Integer> st = new Stack<>();
+        
+        for(int i=0; i<S.length(); i++){
+            char c = S.charAt(i);
+            if(Character.isDigit(c)){
+                st.push(c-'0');
+            }
+            else {
+                int n2 = st.pop();
+                int n1 = st.pop();
+                switch(c){
+                    case '+':
+                        st.push(n1 + n2);
+                        break;
+                    case '-':
+                        st.push(n1 - n2);
+                        break;
+                    case '*':
+                        st.push(n1 * n2);
+                        break;
+                    case '/':
+                        st.push(n1 / n2);
+                        break;
+                } 
+            }
+        }
+        return st.pop();
+}

@@ -1,0 +1,111 @@
+// Implement stack using queue - easy - 07/08/2023
+
+// Approach 1 - two queues - push - O(1), pop O(n) 
+class MyStack {
+    Queue<Integer> q1;
+    Queue<Integer> q2 ;
+
+    public MyStack() {
+        q1 = new LinkedList<>();
+        q2 = new LinkedList<>();
+    }
+    private int top; 
+    public void push(int x) {
+        top = x;
+        q1.add(x);
+    }
+    
+    public int pop() {
+        
+        while(q1.size() > 1){
+            top = q1.remove();
+            q2.add(top);
+        }
+
+        int res = q1.remove();
+        while(!q2.isEmpty()){
+            q1.add(q2.remove());
+        }
+        return res;
+    }
+    
+    public int top() {      
+        return top;
+    }
+    
+    public boolean empty() {
+        return q1.isEmpty();
+    }
+}
+
+// Approach 2 - push O(n), pop O(1)
+
+class MyStack {
+    Queue<Integer> q1;
+    Queue<Integer> q2 ;
+
+    public MyStack() {
+        q1 = new LinkedList<>();
+        q2 = new LinkedList<>();
+    }
+    private int top; 
+    public void push(int x) {
+        top = x;
+        q2.add(x);
+        while(!q1.isEmpty()){
+            q2.add(q1.remove());
+        }
+        Queue<Integer> temp = q1;
+        q1 = q2;
+        q2 = temp;
+    }
+    
+    public int pop() {
+        int res = q1.remove();
+        if(!q1.isEmpty()){
+            top = q1.peek();
+        }
+        return res;
+    }
+    
+    public int top() {      
+        return top;
+    }
+    
+    public boolean empty() {
+        return q1.isEmpty();
+    }
+}
+
+// Approach 3 - one queue Push O(n), pop O(1)
+
+class MyStack {
+    Queue<Integer> q;
+
+    public MyStack() {
+        q = new LinkedList<>();
+    }
+     
+    public void push(int x) {
+       
+        q.add(x);
+        int size = q.size();
+
+        while(size-- > 1){
+            q.add(q.remove());
+        }
+    }
+    
+    public int pop() {
+        
+        return q.remove();
+    }
+    
+    public int top() {      
+        return q.peek();
+    }
+    
+    public boolean empty() {
+        return q.isEmpty();
+    }
+}

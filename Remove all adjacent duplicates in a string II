@@ -1,0 +1,39 @@
+// Remove all adjacent duplicates in a string II - medium - 09/08/2023
+
+class Counter {
+    char c;
+    int count;
+
+    Counter(char c){
+        this.c = c;
+        this.count = 1;
+    }
+    @Override
+    public String toString(){
+        return Character.toString(c).repeat(count);
+    }
+}
+class Solution {
+    public String removeDuplicates(String s, int k) {
+        Stack<Counter> st = new Stack<>();
+        
+        for(int i=0; i<s.length(); i++){
+            char c = s.charAt(i);
+             if(!st.isEmpty() && st.peek().c==c){
+                if(st.peek().count == k-1){
+                    st.pop();   
+                }
+                else {
+                    st.peek().count++;
+                }
+            }else {
+                st.push(new Counter(c));
+            }
+        }
+        StringBuilder res = new StringBuilder();
+        for(Counter charCount: st){
+            res.append(charCount);
+        }
+        return res.toString();
+    }
+}

@@ -1,0 +1,60 @@
+// Sum of subarray minimum - medium - 09/08/2023
+
+class Solution {
+    private int[] getnsl(int[] nums, int n){
+        Stack<Integer> st = new Stack<>();
+        int[] ans = new int[n];
+        for(int i=0; i<n; i++){
+            
+            if(st.isEmpty()){
+                ans[i] = -1;
+            }else {
+                while(!st.isEmpty() && nums[st.peek()] > nums[i]){
+                    st.pop();
+                }
+                ans[i] = st.isEmpty() ? -1: st.peek();
+            }
+            st.push(i);
+        }
+        return ans;
+    }
+    private int[] getnsr(int[] nums, int n){
+        Stack<Integer> st = new Stack<>();
+        int[] ans = new int[n];
+        for(int i=n-1; i>=0; i--){
+            
+            if(st.isEmpty()){
+                ans[i] = n;
+            }else {
+                while(!st.isEmpty() && nums[st.peek()] >= nums[i]){
+                    st.pop();
+                }
+                ans[i] = st.isEmpty() ? n : st.peek();
+            }
+            st.push(i);
+        }
+        return ans;
+    }
+
+    public int sumSubarrayMins(int[] arr) {
+        int n = arr.length;
+
+        int[] nsl = getnsl(arr, n);  // left me kitne elements honge
+        int[] nsr = getnsr(arr, n);  // right me kitne elements honge
+
+        long sum = 0;
+
+        int mod = 1_000_000_007;
+
+        for(int i=0; i<n; i++){
+            long ls = i-nsl[i];
+            long rs = nsr[i] - i;
+            long totalWays = ls*rs;
+          // total ways subarray honge jinka minimum arr[i] h
+            long totalSum = arr[i]*totalWays;
+
+            sum = (sum + totalSum) % mod;
+        }
+        return (int)sum;
+    }
+}

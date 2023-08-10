@@ -1,0 +1,40 @@
+// Flatten Nested list iterator - medium - 10/08/2023
+
+public class NestedIterator implements Iterator<Integer> {
+    List<Integer> result = new ArrayList<>();
+    int i =0;
+
+    public NestedIterator(List<NestedInteger> nestedList) {
+        for(int i=0;i<nestedList.size();i++)
+        {
+            if(nestedList.get(i).isInteger())
+            result.add(nestedList.get(i).getInteger());
+            else
+            helper(nestedList.get(i));
+        }
+    }
+
+    @Override
+    public Integer next() {
+        return result.get(i++);
+
+    }
+
+    @Override
+    public boolean hasNext() {
+        return (i<result.size());
+    }
+
+    public void helper(NestedInteger data)
+    {
+        if(data.isInteger())
+        result.add(data.getInteger());
+
+        else {
+            for(int i=0;i<data.getList().size();i++)
+            helper(data.getList().get(i));
+        }
+
+    }
+
+}

@@ -1,0 +1,29 @@
+// Minimum cost trees form leaf values - 10/08/2023
+
+Possible by using stack and DP
+
+class Solution {
+    public int mctFromLeafValues(int[] arr) {
+        if(arr == null && arr.length< 2){
+            return 0;
+        }
+        int ans = 0;
+        Stack<Integer> s = new Stack<>();
+
+        s.push(arr[0]);
+
+        for(int i=1; i<arr.length; i++){
+            while(!s.isEmpty() && s.peek() <= arr[i]){
+                int sv = s.pop();
+                int prev = (s.size() == 0) ? Integer.MAX_VALUE : s.peek();
+
+                ans += sv*Math.min(arr[i], prev);
+            }
+            s.push(arr[i]);
+        }
+        while(s.size()>1){
+            ans+= s.pop()*s.peek();
+        }
+        return ans;
+    }
+}

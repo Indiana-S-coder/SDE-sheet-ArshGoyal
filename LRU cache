@@ -1,0 +1,82 @@
+// LRU cache - hard - 11/08/2023
+
+// design the class in the most optimal way
+class Node{
+    int key;
+    int value;
+    Node pre;
+    Node next;
+    
+    public Node(int key, int value){
+        this.key = key;
+        this.value = value;
+    }
+}
+class LRUCache
+{
+    static HashMap<Integer,Node> map;
+    static Node head , tail;
+    static int cap, count;
+    
+    //Constructor for initializing the cache capacity with the given value.
+    LRUCache(int cap)
+    {   
+        this.cap = cap;
+        map = new HashMap<>();
+        head = new Node(0 , 0);
+        tail = new Node(0 , 0);
+        head.next = tail;
+        tail.pre = head;
+        head.pre = null;
+        tail.next = null;
+        count = 0;
+    }
+    
+    public static void add(Node node){
+        node.next = head.next;
+        node.next.pre = node;
+        node.pre = head;
+        head.next = node;
+    }
+    
+    public static void delete(Node node){
+        node.pre.next = node.next;
+        node.next.pre = node.pre;
+    }
+    //Function to return value corresponding to the key.
+    public static int get(int key)
+    {
+        if(map.containsKey(key)){
+            Node node = map.get(key);
+            int res = node.value;
+            delete(node);
+            add(node);
+            return res;
+        }
+    return -1;
+    }
+
+    //Function for storing key-value pair.
+    public static void set(int key, int value)
+    {
+        if(map.containsKey(key)){
+            Node node = map.get(key);
+            node.value = value;
+            delete(node);
+            add(node);
+        }
+        else{
+            Node node = new Node(key,value);
+            map.put(key,node);
+            if(count<cap){
+                count++;
+                add(node);
+            }
+            else{
+                map.remove(tail.pre.key);
+                delete(tail.pre);
+                add(node);
+            }
+        }
+    }
+}

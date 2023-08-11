@@ -1,0 +1,51 @@
+// The celebrity problem - hard - 11/08/2023
+
+int celebrity(int M[][], int n)
+    {
+    	Stack<Integer> st = new Stack<>();
+    	for(int i=0; i<n; i++){
+    	    st.push(i);
+    	}
+    	
+    	while(st.size() > 1){
+    	    int a = st.peek();
+    	    st.pop();
+    	    
+    	    int b = st.peek();
+    	    st.pop();
+    	    
+    	    if(M[a][b] == 1 && M[b][a]==0){
+    	        st.push(b);
+    	    }else {
+    	        st.push(a);
+    	    }
+    	}
+    	int can = st.peek();
+    	boolean rowCheck = false;
+    	int rCount = 0;
+    	for(int i=0; i<M.length; i++){
+    	    if(M[can][i] == 0){
+    	        rCount++;
+    	    }
+    	}
+    	if(rCount == n){
+    	    rowCheck = true;
+    	}
+    	
+    	boolean colCheck = false;
+    	int cCount = 0;
+    	
+    	for(int i=0; i<M[0].length; i++){
+    	    if(M[i][can] == 1){
+    	        cCount++;
+    	    }
+    	}
+    	if(cCount == n-1){
+    	    colCheck = true;
+    	}
+    	
+    	if(rowCheck & colCheck){
+    	    return can;
+    	}
+    	return -1;
+    }

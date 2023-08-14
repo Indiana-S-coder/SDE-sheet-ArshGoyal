@@ -43,3 +43,51 @@ public int numDecodings(String s) {
         }
         return dp[n];
   }
+
+
+// Understandable
+
+   int[] dp;
+    private int solve(String s, int i){
+        if( i >= s.length())return 1;
+        if(dp[i] != 0){
+            return dp[i];
+        }
+        int ans = 0;
+        int op1 = s.charAt(i) - '0';
+        int op2 = 0;
+        if(i < s.length()-1){
+            op2 = op1*10 + s.charAt(i+1)-'0';
+        }
+        if(op1 > 0)ans += solve(s, i+1);
+        if(op2 > 0 && op1 > 0 && op2 <= 26){
+            ans += solve(s, i+2);
+        }
+        return dp[i] = ans;
+    }
+public int numWays(String s){
+        return solve(s, 0);
+}
+
+// 2nd tabulation
+
+public int numDecodings(String s) {
+        dp = new int[s.length()+2];
+        int n = s.length();
+        dp[n+1] = 1;
+        dp[n] = 1;
+
+        for(int i=n-1; i>=0; i--){
+            int op1 = s.charAt(i)-'0', op2 = 0;
+            if(i < s.length()-1){
+                op2 = op1 * 10 + s.charAt(i+1)-'0';
+            }
+            if(op1 > 0){
+                dp[i] += dp[i+1];
+            }
+            if(op2 >0 && op1 > 0 && op2 <=26){
+                dp[i] += dp[i+2];
+            }
+        }
+        return dp[0];
+    }

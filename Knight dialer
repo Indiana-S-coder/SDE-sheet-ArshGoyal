@@ -1,0 +1,32 @@
+// Knight dialer - medium - 15/08/2023
+
+ public int knightDialer(int n) {
+            int mod = 1000000007;
+    int[][] paths = {{4,6},{6,8},{7,9},{4,8},{0,3,9},{},{0,1,7},{2,6},{1,3},{2,4}};
+    
+    int[][] dp = new int[n+1][10];
+    
+    for(int i=0;i<10;i++){
+        dp[1][i] = 1;
+    }
+    
+    
+    int sum = 0;
+    for(int i=2;i<n+1;i++){
+        for(int j=0; j<10; j++){
+            for(int k =0;k<paths[j].length;k++){
+                int y = paths[j][k];
+                dp[i][j] += dp[i-1][y];
+				// if this gets too big we mod it per problem description
+                dp[i][j] = dp[i][j] % mod;
+            }        
+        }
+    }
+    
+    for(int j=0;j<10;j++){
+        sum+=dp[n][j];
+		// if this gets too big we mod it per problem description
+        sum = sum % mod;
+    }
+    return sum;
+    }

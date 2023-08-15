@@ -1,0 +1,35 @@
+// Job sequencing problem - medium - 15/08/2023
+
+class myCmp implements Comparator<Job>{
+    public int compare(Job a, Job b){
+        return b.profit-a.profit;
+    }
+}
+class Solution
+{
+    //Function to find the maximum profit and the number of jobs done.
+    int[] JobScheduling(Job arr[], int n)
+    {
+        Arrays.sort(arr, new myCmp());
+        
+        boolean done[] = new boolean[n];
+        
+        int count = 0, profit = 0;
+        
+        for(int i=0; i<n; i++){
+            for(int j=arr[i].deadline-1; j>=0; j--){
+                if(done[j] == false){
+                    count++;
+                    profit += arr[i].profit;
+                    done[j] = true;
+                    break;
+                }
+            }
+        }
+        int[] ans = new int[2];
+        ans[0] = count;
+        ans[1] = profit;
+        
+        return ans;
+    }
+}

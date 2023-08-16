@@ -1,0 +1,75 @@
+// Sliding window maximum - hard - 16/08/2023
+
+// Approach 1 using PQ
+class Pair implements Comparable<Pair>{
+    int value;
+    int idx;
+    public Pair(int v, int i){
+        this.value = v;
+        this.idx = i;
+    }
+    @Override
+    public int compareTo(Pair p){
+        return p.value-this.value;
+    }
+}
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        PriorityQueue<Pair> pq = new PriorityQueue<>();
+        int n = nums.length;
+        int[] ans = new int[n-k+1];
+        int j = 0;
+        
+        for(int i=0; i<k; i++){
+            pq.add(new Pair(nums[i], i));
+        }
+        ans[j++] = pq.peek().value;
+        for(int i=k; i<n; i++){
+            while(pq.size() > 0 && pq.peek().idx <= i-k)
+            {
+                pq.remove();
+            }
+            pq.add(new Pair(nums[i], i));
+            ans[j++] = pq.peek().value;
+        }
+            
+        return ans;
+
+    }
+}
+
+// Approach 2 - iterative
+
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        int n = nums.length;
+        int[] res = new int[n-k+1];
+        int left = 0, right = k-1, maxIndex = maxIndex(nums, 0, k-1);
+        while(true){
+            if(maxIndex >= left) {
+                res[left++] = nums[maxIndex];
+                right++;
+                if(right == n) break;
+                if(nums[right] >= nums[maxIndex]) maxIndex = right;
+
+            }
+            else{
+                if(nums[right] >= nums[maxIndex]-1) maxIndex = right;
+                else if(nums[left] >= nums[maxIndex]-1) maxIndex = left;
+                else maxIndex = maxIndex(nums, left, right);
+            }
+        }
+        return res;
+    }
+
+    public int maxIndex(int[] nums, int start, int end){
+        int index = start, val = nums[start];
+        for (int i = start + 1; i <= end; i++) {
+            if(val <= nums[i]){
+                val = nums[i];
+                index = i;
+            }
+        }
+        return index;
+    }
+}

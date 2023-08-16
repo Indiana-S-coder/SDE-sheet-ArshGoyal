@@ -1,0 +1,52 @@
+// Frog Jump - hard - 16/08/2023
+
+    public boolean canCross(int[] stones) {
+        HashMap<Integer, HashSet<Integer>> map = new HashMap<>();
+
+        for(int i : stones){
+            map.put(i, new HashSet<>());
+        } 
+
+        map.get(stones[0]).add(1);
+
+        for(int i=0; i<stones.length; i++){
+            int currStone = stones[i];
+            HashSet<Integer> jumps = map.get(currStone);
+
+            for(int jump: jumps){
+                int pos = currStone + jump;
+                if(pos == stones[stones.length-1]){
+                    return true;
+                }
+                if(map.containsKey(pos)){
+                    if(jump-1 > 0)
+                        map.get(pos).add(jump-1);
+                    map.get(pos).add(jump);
+                    map.get(pos).add(jump+1);
+                }
+            }
+        }
+        return false;
+    }
+
+// Recursion approach
+
+class Solution {
+    private HashMap<Integer, HashSet> checked = new HashMap<>();
+   public boolean canCross(int[] stones) {
+    for (int i = 0; i < stones.length; i++) checked.put(stones[i], new HashSet<>());
+    return jump(0, 1, stones[stones.length - 1]);
+}
+
+private boolean jump(int current, int k, int last) {
+    if (current == last) return true;
+	// skip if we have checked this k at the current stone
+    if (k <= 0 || checked.get(current).contains(k)) return false;
+    int next = current + k;
+    if (checked.containsKey(next)) {
+        if (jump(next, k + 1, last) || jump(next, k, last) || jump(next, k - 1, last)) return true;
+    }
+    checked.get(current).add(k);
+    return false;
+}
+}

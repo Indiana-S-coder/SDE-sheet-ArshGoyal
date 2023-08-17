@@ -1,0 +1,12 @@
+// Maximum depth of binary tree - easy - 17/08/2023
+
+ public int maxDepth(TreeNode root) {
+        if(root == null){
+            return 0;
+        }
+
+        int leftht = maxDepth(root.left);
+        int rightht = maxDepth(root.right);
+
+        return Math.max(leftht, rightht) + 1;
+  }

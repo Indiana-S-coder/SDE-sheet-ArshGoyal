@@ -1,0 +1,28 @@
+// Combination sum II - medium - 19/08/2023
+
+class Solution {
+    private void solve(int[] candidates, int sum, int target, List<Integer> combinations, List<List<Integer>> result, int start){
+        if(sum == target){
+            result.add(new ArrayList<>(combinations));
+            return ;
+        }
+        
+        for(int i=start; i<candidates.length; i++){
+            if(i > start && candidates[i] == candidates[i-1]){
+                continue;
+            }
+            if(sum+candidates[start] <= target){
+                combinations.add(candidates[i]);
+                solve(candidates, sum+candidates[i], target, combinations, result, i+1);
+                combinations.remove(combinations.size()-1);
+            }
+        }
+        
+    }
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        List<List<Integer>> result = new ArrayList<>();
+        Arrays.sort(candidates);
+        solve(candidates, 0, target, new ArrayList<>(), result, 0);
+        return result;
+    }
+}

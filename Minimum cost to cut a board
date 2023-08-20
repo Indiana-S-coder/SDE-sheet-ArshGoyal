@@ -1,0 +1,37 @@
+// Minimum cost to cut a board - medium - 20/08/2023
+
+ public static int minimumCostOfBreaking(int[] X, int[] Y,int M,int N) {
+       Arrays.sort(X);
+       reverse(X);
+       Arrays.sort(Y);
+       reverse(Y);
+       
+       int hp=1, vp=1;
+       int h=0, v=0;
+       int cost = 0;
+       
+       while(v<X.length && h<Y.length){
+           if(X[v] >= Y[h]){
+               cost += X[v]*hp;
+               v++;
+               vp++;
+           }else {
+               cost += Y[h]*vp;
+               h++;
+               hp++;
+           }
+       }
+       
+       while(v < X.length){
+           cost += X[v]*hp;
+           v++;
+           vp++;
+       }
+       while(h < Y.length){
+           cost += Y[h]*vp;
+           h++;
+           hp++;
+       }
+       
+       return cost;
+    }

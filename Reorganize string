@@ -1,0 +1,50 @@
+// Reorganize string - medium - 26/08/2023
+
+class Pair{
+    int f;
+    char s;
+    
+    Pair(int f, char s){
+        this.f = f;
+        this.s = s;
+    }
+}
+class Solution {
+    public String reorganizeString(String s) {
+        int[] charCount = new int[26];
+        int n = s.length();
+        
+        for (char each : s.toCharArray()) {
+            charCount[each-'a']++;
+            if(charCount[each-'a'] > (n+1)/2){
+                return "";
+            }
+        }
+        PriorityQueue<Pair> pq = new PriorityQueue<>((a,b) -> b.f-a.f);
+        for(int i=0; i<26; i++){
+            if(charCount[i] > 0)
+                pq.add(new Pair(charCount[i], (char)(i+'a')));
+        }
+
+        StringBuilder str = new StringBuilder();
+        while(pq.size() >= 2){
+            Pair p1 = pq.poll();
+            Pair p2 = pq.poll();
+            
+            str.append(p1.s);
+            str.append(p2.s);
+            if(p1.f > 1){
+                pq.offer(new Pair(p1.f-1, p1.s));
+            }
+            if(p2.f > 1){
+                pq.offer(new Pair(p2.f-1, p2.s));
+            }
+        }
+
+        if(!pq.isEmpty()){
+            str.append(pq.poll().s);
+        }
+
+        return str.toString();
+    }
+}

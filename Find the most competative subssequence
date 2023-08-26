@@ -1,0 +1,38 @@
+// Find the most competative subssequence- medium - 26/08/2023
+
+class Pair {
+    int num;
+    int idx;
+
+    Pair(int n, int i){
+        this.num = n;
+        this.idx = i;
+    }
+}
+class Solution {
+    public int[] mostCompetitive(int[] nums, int k) {
+        int n = nums.length;
+        PriorityQueue<Pair> pq = new PriorityQueue<>((a,b) -> a.num - b.num == 0 ? a.idx - b.idx : a.num - b.num);
+
+        int idx = -1;
+        for(int i=0; i<n-k+1; i++){
+            pq.add(new Pair(nums[i], i));
+        }
+
+        int[] ans = new int[k];
+       
+        while(!pq.isEmpty() && k > 0){
+            Pair p = pq.poll();
+            if(p.idx > idx){
+                ans[ans.length-k] = p.num;
+                k--;
+                idx = p.idx;
+                if(k > 0){
+                    pq.add(new Pair(nums[n-k], n-k));
+                }
+            }
+        }
+        
+        return ans;
+    }
+}

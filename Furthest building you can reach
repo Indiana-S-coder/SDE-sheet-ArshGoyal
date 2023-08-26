@@ -1,0 +1,50 @@
+// Furthest building you can reach - medium - 26/08/2023
+
+class Solution {
+    public int furthestBuilding(int[] heights, int bricks, int ladders) {
+
+		// A Max heap priority queue because we need to store the max jump distances of all previous jumps
+		
+        PriorityQueue<Integer> pQueue = new PriorityQueue<Integer>(Collections.reverseOrder());
+        for(int i = 1; i<heights.length; i++){
+
+            int diff = heights[i] - heights[i-1];
+		
+            if(diff > 0){
+				// If bricks are sufficient we pessimisticallly use them,
+				// Add this transaction to the priority queue and move forward
+                if(diff <= bricks){
+                    bricks -= diff;
+                    pQueue.add(diff);
+                }
+                else{
+					// If there are no bricks and no ladders then its beyond help ☹️
+                    if(ladders <= 0)
+                        return i-1;
+					
+                    if(!pQueue.isEmpty()){
+						// We see the highest jump till now
+                        int top = pQueue.peek();
+						// if it is greater than our current jump distance then hurray
+						// We saved a few bricks along the way 🤑🧱
+                        if(top > diff){
+                            pQueue.poll();
+                            bricks += top;
+                            bricks -= diff;
+                            pQueue.add(diff);
+                        }
+                        ladders -=1;
+                    }
+
+                    else{
+							// If no jumps made so far and no bricks
+							// then we have no option but to use up the ladders 🪜
+                            ladders -=1;
+                    }
+                }
+            }
+        }
+		
+        return heights.length -1;
+    }
+}

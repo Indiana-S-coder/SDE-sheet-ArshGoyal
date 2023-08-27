@@ -1,0 +1,22 @@
+// Smallest positive missing number - medium - 27/08/2023
+
+ static int missingNumber(int arr[], int size)
+    {
+        HashSet<Integer> set = new HashSet<>(); 
+        
+        for(int j : arr)
+        {
+            if(j > 0)
+            {
+                set.add(j);
+            }
+        } 
+        
+        int count = 1; 
+        
+        while(set.contains(count))
+        {
+            count++;
+        } 
+        return count;
+    }

@@ -1,0 +1,34 @@
+// Palindrome Partitioning - medium - 28/08/2023
+
+class Solution {
+    private void solve(String s, int i, List<List<String>> ans, List<String> str){
+
+        if(i >= s.length()){
+            ans.add(new ArrayList<>(str));
+        }
+
+        for(int end = i; end < s.length(); end++){
+            if(isPalindrome(s, i, end)){
+                str.add(s.substring(i, end+1));
+                solve(s, end + 1, ans, str);
+                str.remove(str.size()-1);
+            }
+        }
+    }
+
+    private boolean isPalindrome(String s, int low, int high){
+        while(low < high){
+            if(s.charAt(low++) != s.charAt(high--)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public List<List<String>> partition(String s) {
+        List<List<String>> ans = new ArrayList<>();
+        
+        solve(s, 0, ans, new ArrayList<>());
+        return ans;
+    }
+}

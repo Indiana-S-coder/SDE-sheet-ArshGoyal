@@ -1,0 +1,43 @@
+// M-coloring problem - medium - 28/08/2023
+
+class solve {
+    
+     public boolean isSafe(boolean graph[],int fill,int[] color)
+    {
+        //get connected nodes of current nodes
+        for(int i=0;i<graph.length;i++)
+        {
+            
+            if(graph[i]==true && color[i]==fill)
+            return false;
+        }
+        
+        return true;
+    }
+    private boolean solve(boolean graph[][], int col[], int m, int n, int curr){
+        if(curr == n){
+            return true;
+        }
+        
+        for(int i=1; i<=m; i++){
+            if(isSafe(graph[curr], i, col)){
+                col[curr] = i;
+                
+                if(solve(graph, col, m, n, curr+1))
+                    return true;
+                
+                col[curr] = 0;
+            }
+        }
+        return false;
+    }
+    
+    public boolean graphColoring(boolean graph[][], int m, int n) {
+        
+        int[] col = new int[n];
+        
+        if(solve(graph, col, m, n, 0))return true;
+        
+        return false;
+    }
+}

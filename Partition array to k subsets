@@ -1,0 +1,40 @@
+// Partition array to K subsets - hard - 29/08/2023
+
+class Solution
+{
+    boolean vis[];
+    private boolean solve(int[] a, int k, int target, int curr){
+        if(curr == target){
+            return solve(a, k-1, target, 0);
+        }
+        if(k == 1){
+            return true;
+        }
+        
+        for(int i=0; i<a.length; i++){
+            if(!vis[i] && curr+a[i] <= target){
+                vis[i] = true;
+                if(solve(a, k, target, curr+a[i]))return true;
+                vis[i] = false;
+            }
+        }
+        return false;
+    }
+    
+    public boolean isKPartitionPossible(int a[], int n, int k)
+    {
+        vis = new boolean[a.length];
+        
+	    int sum = 0;
+	    
+	    for(int i: a){
+	        sum+=i;
+	    }
+	    
+	    if(sum%k != 0){
+	        return false;
+	    }else {
+	        return solve(a, k, sum/k, 0);
+	    }
+    }
+}

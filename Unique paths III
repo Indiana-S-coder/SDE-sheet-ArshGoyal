@@ -1,0 +1,55 @@
+// Unique paths III - 29/08/2023
+
+class Solution {
+    int[] dx = {0, 0, 1, -1};
+    int[] dy = {1, -1, 0, 0};
+
+    private int solve(int[][] grid, boolean[][] vis, int row, int col, int zeros){
+        vis[row][col] = true;
+        
+        if(grid[row][col] == 2){
+            if(zeros==0 && grid[row][col] != -1){
+                vis[row][col] = false;
+                return 1;
+            }
+            vis[row][col] = true;
+            return 0;
+        }
+        if(grid[row][col] == -1){
+            vis[row][col] = false;
+            return 0;
+        }
+        int count = 0;
+        for(int i=0; i<4; i++){
+            int nx = row + dx[i];
+            int ny = col + dy[i];
+
+            if(nx>=0 && ny>=0 && nx<grid.length && ny<grid[0].length && !vis[nx][ny] &&  grid[nx][ny]!=-1){
+                vis[nx][ny] = true;
+                count+=solve(grid, vis, nx, ny, zeros-1);
+                vis[nx][ny] = false;
+            }
+        }
+        return count;
+    }
+
+    public int uniquePathsIII(int[][] grid) {
+        int r = 0, c = 0, zeros = 0;
+
+        boolean[][] vis = new boolean[grid.length][grid[0].length];
+
+        for(int i=0; i<grid.length; i++){
+            for(int j=0; j<grid[0].length; j++){
+                if(grid[i][j] == 1){
+                    r = i;
+                    c = j;
+                }
+                if(grid[i][j] == 0){
+                    zeros++;
+                }
+            }
+        }        
+
+        return solve(grid, vis, r, c, zeros+1);
+    }
+}

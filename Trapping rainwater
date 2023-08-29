@@ -1,0 +1,29 @@
+// Trapping rain water - hard - 29/08/2023
+
+class Solution {
+    public int trap(int[] height) {
+        int n = height.length;
+        int trappedWater = 0;
+        if(n <= 2 )
+        return 0;
+        else{
+            int left=0, right=n-1;
+            int maxleft=0, maxright=0;
+            while(left <= right){
+             if(height[left]<=height[right]){
+             
+                if(height[left]>=maxleft)maxleft=height[left];
+                else trappedWater+=maxleft-height[left];
+                left++;
+            }
+            else {
+                if(height[right]>=maxright)maxright=height[right];
+                else trappedWater+=maxright-height[right];
+              right--;
+            }
+        }
+            return trappedWater;
+        
+    }
+}
+}

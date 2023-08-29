@@ -1,0 +1,44 @@
+// Largest number in K swaps - hard - 29/08/2023
+
+class Solution
+{
+    public static String findMaximumNum(String str, int k){
+           String[] ss=new String[1];
+            ss[0]=str;
+            int n=str.length();
+            backtrack(0,str,k,ss);
+            return ss[0];
+    }
+    
+      public static void backtrack(int index, String str, int k, String[] ss){
+        if(k>=0)
+        {
+            if(str.compareTo(ss[0])>0)
+            ss[0]=str;
+            if(k==0) return;
+        }
+
+        if(index==str.length()) 
+        return;
+
+        for(int i=index;i<str.length();i++){
+            if(i==index){
+                backtrack(index+1,str,k,ss);
+            }
+
+            if(i!=index && str.charAt(i)>str.charAt(index))
+            {
+                str=swap(i,index,str);
+                backtrack(index+1,str,k-1,ss);
+                str=swap(i,index,str);
+            }
+        }
+    }
+    public static String swap(int i, int j, String s){
+        char[] temp=s.toCharArray();
+        char ch=temp[i];
+        temp[i]=temp[j];
+        temp[j]=ch;
+        return String.valueOf(temp);
+    }
+}

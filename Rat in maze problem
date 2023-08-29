@@ -1,0 +1,41 @@
+// Rat in maze problem - medium - 29/08/2023
+
+class Solution {
+    static boolean[][] vis;
+    static int[][] dir = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+    static char[] ch = {'R', 'L', 'D', 'U'};
+    
+    private static void solve(int[][] m, int n, ArrayList<String> ans, int row, int col, String str){
+        if(row==n-1 && col==n-1){
+            ans.add(str);
+            return;
+        }    
+        vis[row][col] = true;
+        for(int i=0; i<4; i++){
+            int nx = row + dir[i][0];
+            int ny = col + dir[i][1];
+            char c = ch[i];
+            if(nx>=0 && ny>=0 && nx<n && ny<n && !vis[nx][ny] && m[nx][ny]!=0){
+                vis[nx][ny] = true;
+                solve(m, n, ans, nx, ny, str+c);
+                vis[nx][ny] = false;
+            }
+        }
+        
+    }
+    
+    public static ArrayList<String> findPath(int[][] m, int n) {
+        vis = new boolean[n][n];
+        
+        if(m[0][0] == 0 || m[n-1][n-1]==0){
+            return new ArrayList<>();
+        }
+        
+        ArrayList<String> ans = new ArrayList<>();
+        
+        solve(m, n, ans, 0, 0, "");
+        
+        return ans;
+        
+    }
+}

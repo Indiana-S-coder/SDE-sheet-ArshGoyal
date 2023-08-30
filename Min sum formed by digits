@@ -1,0 +1,23 @@
+// Min Sum formed by digits - easy - 30/08/2023
+
+public static long minSum(int arr[], int n)
+    {
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        
+        for(int i : arr){
+            pq.add(i);
+        }
+        
+        long num1 = 0;
+        long num2 = 0;
+        
+        while(pq.size() >= 2){
+            num1 = num1*10 + pq.remove();
+            num2 = num2*10 + pq.remove();
+            
+        }
+        if(!pq.isEmpty()){
+            num1 = num1*10 + pq.remove();
+        }
+        return num1+num2;
+    }

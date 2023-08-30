@@ -1,0 +1,33 @@
+// Minimum cost to merge two stones - hard - 30/08/2023
+
+class Solution {
+    int rec(int[] nums, int[][] dp, int k, int i, int j){
+        if(i >= j) return 0;
+        
+        if(dp[i][j] != -1) return dp[i][j];
+        int min = Integer.MAX_VALUE;
+        
+        for(int n=i; n<j; n+=k-1){
+            int cur = rec(nums, dp, k, i, n) + rec(nums, dp, k, n+1, j);
+            min=Math.min(min,cur);
+        }
+        
+        if(min != Integer.MAX_VALUE && (j-i) % (k-1) == 0){
+            for(int x=i; x<=j; x++){
+                min += nums[x];
+            }
+        }
+        return dp[i][j] = min;
+    }
+
+    public int mergeStones(int[] stones, int k) {
+        if((stones.length-1)%(k-1) !=0)return -1;
+
+        int[][] dp = new int[stones.length+1][stones.length+1]; 
+
+        for(int i=0;i<dp.length;i++)
+            Arrays.fill(dp[i],-1);
+
+        return rec(stones,dp,k,0,stones.length-1);
+    }
+}

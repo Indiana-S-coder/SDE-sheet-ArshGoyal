@@ -1,0 +1,45 @@
+// Restore the array from adjacent pairs - medium - 30/08/2023
+
+class Solution {
+    public int[] restoreArray(int[][] adjacentPairs) {
+        Graph graph = new Graph();
+        for(int[] row : adjacentPairs){
+            graph.addEdge(row[0], row[1]);
+        }
+        int index = 0;
+        int[] ans = new int[adjacentPairs.length + 1];
+        int vertex = graph.getStartingVertex();
+        dfs(graph, vertex, new HashSet<Integer>(), ans, index);
+        return ans;
+    }
+    public void dfs(Graph g, int vertex, HashSet<Integer> visited, int[]ans, int index){
+        visited.add(vertex);
+        ans[index++] = vertex;
+        var neighbours = g.get(vertex);
+        for(int v : neighbours){
+            if(!visited.contains(v)) dfs(g, v, visited, ans, index);
+        }
+    } 
+}
+
+class Graph{
+    HashMap<Integer, ArrayList<Integer>> graph;
+    public Graph(){
+        graph = new HashMap<>();
+    }
+    public void addEdge(int v1, int v2){
+        if(!graph.containsKey(v1)) graph.put(v1, new ArrayList<>());
+        if(!graph.containsKey(v2)) graph.put(v2, new ArrayList<>());
+        graph.get(v1).add(v2);
+        graph.get(v2).add(v1);
+    }
+    public ArrayList<Integer> get(int key){
+        return graph.get(key);
+    }
+    public int getStartingVertex(){
+        for(int vertex : graph.keySet()){
+            if(graph.get(vertex).size() == 1) return vertex;
+        }
+        return -1;
+    }
+}

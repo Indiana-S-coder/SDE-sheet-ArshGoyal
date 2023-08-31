@@ -1,0 +1,370 @@
+// Valid Numbers - hard - 31/08/2023
+
+Explanation -
+-----------
+Well what do we have? The input is a string with a length of 1 to 20 characters inclusive.
+To begin with, let's define what a number cannot have?
+
+Two dots.
+Letters from a to z (except e, but only 1).
+Two '+' and '-' in a row.
+Checks for invalid characters are immediately performed to quickly discard some of the tests (for example, "123a423").
+Let's move on to the main loop. It makes no sense to focus on numbers, it is more important to analyze '+', '-', '.', 'e' (we immediately discarded options with other characters).
+We will need currentChar and previousChar, because they depend heavily on each other. In order not to describe the whole loop, it is worth describing the basic conditions:
+
+If currentChar = '.', then previousChar can only be '+'. '-', '0-9'. In other cases, return false.
+If currentChar = 'e', ​​then previousChar cannot be '+', '-', '. && index == 1', and our 'e' cannot be the second (two 'e') in the number or the last one.
+The last case is if currentChar = '+' || currentChar = '-'. Since currentChar has index >= 1, previousChar can only be 'e' and currentChar cannot be the last character.
+Complexity
+Time complexity:
+O(n)
+
+Space complexity:
+O(1)
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+class Solution {
+    public boolean isNumber(String s) {
+
+        if(s.equals("")){
+            return false;
+        }
+        if(s.length() == 1 && (s.charAt(0) >= '0' && s.charAt(0) <= '9')){
+            return true;
+        }
+        if(s.length() == 1 && (s.charAt(0) <= '0' || s.charAt(0) >= '9')){
+            return false;
+        }
+    
+
+        s = s.toLowerCase();
+
+        if(s.charAt(0) == 'e'){
+            return false;
+        }
+
+        if(isThereLetters(s)){
+            return false;
+        }
+        if(!isThereNumbers(s)){
+            return false;
+        }
+
+        int dotCounter = 0;
+        int dotIndex = -1;
+        int eIndex = 20;
+        for(int i = 1; i < s.length(); ++i){
+            char currentChar = s.charAt(i);
+            char previousChar = s.charAt(i - 1);
+            if(previousChar == '.' && dotIndex != i - 1){
+                ++dotCounter;
+            }
+
+            if(!isNumber(currentChar)){
+                if(currentChar == '.'){
+                    if((previousChar == '+' || previousChar == '-') && i != s.length() - 1){
+                        char nextChar = s.charAt(i + 1);
+                        if(!isNumber(nextChar)){
+                            return false;
+                        }
+                    }
+                    if(i > eIndex){
+                        return false;
+                    }
+                    if(i > 1){
+                        ++dotCounter;
+                        dotIndex = i;
+                    }
+                    if(previousChar == '.'){
+                        return false;
+                    }
+                    if(!isNumber(previousChar) && i == s.length() - 1){
+                        return false;
+                    }
+                } else if(currentChar == 'e'){
+                    if(eIndex != 20){
+                        return false;
+                    } else {
+                        eIndex = i;
+                    }
+                    if(previousChar == '.' && i == 1){
+                        return false;
+                    }
+                    if(previousChar == '-' || previousChar == '+'){
+                        return false;
+                    } else if(i == s.length() - 1){
+                        return false;
+                    }
+                } else if(currentChar == '+' || currentChar == '-'){
+                    if(previousChar != 'e'){
+                        return false;
+                    } else if(i == s.length() - 1){
+                        return false;
+                    }
+                }
+            }
+            if(dotCounter > 1){
+                return false;
+            }
+        }
+        return true;
+
+    }
+
+    public boolean isThereLetters(String s){
+        for(int i = 0; i < s.length(); ++i){
+            if(s.charAt(i) >= 'a' && s.charAt(i) <= 'z'){
+                if(s.charAt(i) != 'e'){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isThereNumbers(String s){
+        for(int i = 0; i < s.length(); ++i){
+            if(s.charAt(i) >= '0' && s.charAt(i) <= '9'){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isNumber(char ch){
+        if(ch >= '0' && ch <= '9'){
+            return true;
+        } else {
+            return false;
+        }
+    }
+}class Solution {
+    public boolean isNumber(String s) {
+
+        if(s.equals("")){
+            return false;
+        }
+        if(s.length() == 1 && (s.charAt(0) >= '0' && s.charAt(0) <= '9')){
+            return true;
+        }
+        if(s.length() == 1 && (s.charAt(0) <= '0' || s.charAt(0) >= '9')){
+            return false;
+        }
+    
+
+        s = s.toLowerCase();
+
+        if(s.charAt(0) == 'e'){
+            return false;
+        }
+
+        if(isThereLetters(s)){
+            return false;
+        }
+        if(!isThereNumbers(s)){
+            return false;
+        }
+
+        int dotCounter = 0;
+        int dotIndex = -1;
+        int eIndex = 20;
+        for(int i = 1; i < s.length(); ++i){
+            char currentChar = s.charAt(i);
+            char previousChar = s.charAt(i - 1);
+            if(previousChar == '.' && dotIndex != i - 1){
+                ++dotCounter;
+            }
+
+            if(!isNumber(currentChar)){
+                if(currentChar == '.'){
+                    if((previousChar == '+' || previousChar == '-') && i != s.length() - 1){
+                        char nextChar = s.charAt(i + 1);
+                        if(!isNumber(nextChar)){
+                            return false;
+                        }
+                    }
+                    if(i > eIndex){
+                        return false;
+                    }
+                    if(i > 1){
+                        ++dotCounter;
+                        dotIndex = i;
+                    }
+                    if(previousChar == '.'){
+                        return false;
+                    }
+                    if(!isNumber(previousChar) && i == s.length() - 1){
+                        return false;
+                    }
+                } else if(currentChar == 'e'){
+                    if(eIndex != 20){
+                        return false;
+                    } else {
+                        eIndex = i;
+                    }
+                    if(previousChar == '.' && i == 1){
+                        return false;
+                    }
+                    if(previousChar == '-' || previousChar == '+'){
+                        return false;
+                    } else if(i == s.length() - 1){
+                        return false;
+                    }
+                } else if(currentChar == '+' || currentChar == '-'){
+                    if(previousChar != 'e'){
+                        return false;
+                    } else if(i == s.length() - 1){
+                        return false;
+                    }
+                }
+            }
+            if(dotCounter > 1){
+                return false;
+            }
+        }
+        return true;
+
+    }
+
+    public boolean isThereLetters(String s){
+        for(int i = 0; i < s.length(); ++i){
+            if(s.charAt(i) >= 'a' && s.charAt(i) <= 'z'){
+                if(s.charAt(i) != 'e'){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isThereNumbers(String s){
+        for(int i = 0; i < s.length(); ++i){
+            if(s.charAt(i) >= '0' && s.charAt(i) <= '9'){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isNumber(char ch){
+        if(ch >= '0' && ch <= '9'){
+            return true;
+        } else {
+            return false;
+        }
+    }
+}class Solution {
+    public boolean isNumber(String s) {
+
+        if(s.equals("")){
+            return false;
+        }
+        if(s.length() == 1 && (s.charAt(0) >= '0' && s.charAt(0) <= '9')){
+            return true;
+        }
+        if(s.length() == 1 && (s.charAt(0) <= '0' || s.charAt(0) >= '9')){
+            return false;
+        }
+    
+
+        s = s.toLowerCase();
+
+        if(s.charAt(0) == 'e'){
+            return false;
+        }
+
+        if(isThereLetters(s)){
+            return false;
+        }
+        if(!isThereNumbers(s)){
+            return false;
+        }
+
+        int dotCounter = 0;
+        int dotIndex = -1;
+        int eIndex = 20;
+        for(int i = 1; i < s.length(); ++i){
+            char currentChar = s.charAt(i);
+            char previousChar = s.charAt(i - 1);
+            if(previousChar == '.' && dotIndex != i - 1){
+                ++dotCounter;
+            }
+
+            if(!isNumber(currentChar)){
+                if(currentChar == '.'){
+                    if((previousChar == '+' || previousChar == '-') && i != s.length() - 1){
+                        char nextChar = s.charAt(i + 1);
+                        if(!isNumber(nextChar)){
+                            return false;
+                        }
+                    }
+                    if(i > eIndex){
+                        return false;
+                    }
+                    if(i > 1){
+                        ++dotCounter;
+                        dotIndex = i;
+                    }
+                    if(previousChar == '.'){
+                        return false;
+                    }
+                    if(!isNumber(previousChar) && i == s.length() - 1){
+                        return false;
+                    }
+                } else if(currentChar == 'e'){
+                    if(eIndex != 20){
+                        return false;
+                    } else {
+                        eIndex = i;
+                    }
+                    if(previousChar == '.' && i == 1){
+                        return false;
+                    }
+                    if(previousChar == '-' || previousChar == '+'){
+                        return false;
+                    } else if(i == s.length() - 1){
+                        return false;
+                    }
+                } else if(currentChar == '+' || currentChar == '-'){
+                    if(previousChar != 'e'){
+                        return false;
+                    } else if(i == s.length() - 1){
+                        return false;
+                    }
+                }
+            }
+            if(dotCounter > 1){
+                return false;
+            }
+        }
+        return true;
+
+    }
+
+    public boolean isThereLetters(String s){
+        for(int i = 0; i < s.length(); ++i){
+            if(s.charAt(i) >= 'a' && s.charAt(i) <= 'z'){
+                if(s.charAt(i) != 'e'){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isThereNumbers(String s){
+        for(int i = 0; i < s.length(); ++i){
+            if(s.charAt(i) >= '0' && s.charAt(i) <= '9'){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isNumber(char ch){
+        if(ch >= '0' && ch <= '9'){
+            return true;
+        } else {
+            return false;
+        }
+    }
+}

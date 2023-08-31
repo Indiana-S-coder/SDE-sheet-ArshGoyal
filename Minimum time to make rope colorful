@@ -1,0 +1,24 @@
+// Minimum time to make rope colorful - medium - 31/08/2023
+
+public int minCost(String colors, int[] neededTime) {
+        int n = neededTime.length;
+        
+        int time = 0;
+        int pt = 0;
+        for(int i=1; i<n; i++){
+            if(colors.charAt(pt) == colors.charAt(i)){
+                if(neededTime[i] >= neededTime[pt]){
+                    time += neededTime[pt];
+                    pt = i;
+                }
+                else {
+                    time += neededTime[i];
+                }
+                 
+            }
+            else {
+                pt = i;
+            }
+        }
+        return time;
+    }

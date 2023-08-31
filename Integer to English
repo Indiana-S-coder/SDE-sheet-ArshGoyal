@@ -1,0 +1,42 @@
+// Integer to English - hard - 31/08/2023
+
+Approach for this Problem:
+Declare three string arrays to hold words for numbers (0-19), ten-digit numbers (10-90), and thousands (1K, 1M, 1B).
+Define a helper function that takes an integer as input and returns its English representation.
+In the helper function, use a recursive approach to convert the input number into English words.
+Base cases:
+a. If the number is less than 20, return its corresponding word from the ones array.
+b. If the number is less than 100, return its corresponding word from the tens array plus a recursive call to the helper function with the remainder of the division by 10.
+c. If the number is less than 1000, return its corresponding word from the ones array divided by 100, the word "Hundred", and a recursive call to the helper function with the remainder of the division by 100.
+d. For larger numbers, loop through the thousands array from largest to smallest, and recursively call the helper function with the quotient of the input number divided by 1000 raised to the current index of the loop. Append the corresponding word from the thousands array to the result, and then recursively call the helper function with the remainder of the division by 1000 raised to the current index of the loop.
+In the numberToWords function, handle the edge case where the input number is zero. If it is, return the string "Zero". Otherwise, call the helper function with the input number, and remove the leading space using substr(1).
+Return the resulting string.
+
+class Solution {
+    //globally declare arrays
+    String[] ones = {"", " One", " Two", " Three", " Four", " Five", " Six", " Seven", " Eight", " Nine", " Ten", " Eleven", " Twelve", " Thirteen", " Fourteen", " Fifteen", " Sixteen", " Seventeen", " Eighteen", " Nineteen"};
+    String[] tens = {"", " Ten", " Twenty", " Thirty", " Forty", " Fifty", " Sixty", " Seventy", " Eighty", " Ninety"};
+    String[] thousands = {"", " Thousand", " Million", " Billion"};
+    //helper function
+    public String helper(int n) {
+        if (n < 20) 
+            return ones[n];
+        if (n < 100) 
+            return tens[n / 10] + helper(n % 10);
+        if (n < 1000) 
+            return helper(n / 100) + " Hundred" + helper(n % 100);
+        for (int i = 3; i >= 0; i--) {
+            if (n >= Math.pow(1000, i)) {
+                return helper((int)(n / Math.pow(1000, i))) + thousands[i] + helper((int)(n % Math.pow(1000, i)));
+            }
+        }
+        return "";
+    }
+
+    public String numberToWords(int num) {
+        // edge case
+        if (num == 0) 
+            return "Zero";
+        return helper(num).substring(1);
+    }
+}

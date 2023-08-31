@@ -1,0 +1,35 @@
+// Rabin-Karp Algorithm - hard - 31/08/2023
+
+ArrayList<Integer> search(String pat, String txt)
+    {
+        final int p = 31, mod = 1_000_000_007;
+        int m = pat.length(), n = txt.length();
+
+        // Precomputing power
+        long[] p_pow = new long[Math.max(m, n)];
+        p_pow[0] = 1;
+        for (int i = 1; i < p_pow.length; i++)p_pow[i] = (p_pow[i - 1] * p) % mod;
+
+        // Store hash prefix array for the string
+        long[] hash = new long[n + 1];
+        for (int i = 0; i < n ; i++)hash[i + 1] = (hash[i] + (txt.charAt(i)-'a'+1) * p_pow[i]) % mod;
+            
+            
+        // Storing the pattern hash
+        long pHash = 0;
+        for (int i = 0; i < m; i++)pHash = (pHash + (pat.charAt(i)-'a'+1) * p_pow[i]) % mod;
+
+        // Sliding window
+        ArrayList<Integer> ans = new ArrayList<>();
+        
+        for (int i = 0; i < n - m + 1; i++){
+            long tHash = (hash[i + m] - hash[i] + mod) % mod;
+            
+            // Comparision the p_pow to the right instead of dividing to save LogN time for moudlar inverse
+            if (tHash == pHash * p_pow[i] % mod)ans.add(i + 1);
+        }
+
+        if (ans.isEmpty())ans.add(-1);
+        
+        return ans;
+    }

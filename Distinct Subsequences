@@ -1,6 +1,9 @@
-// Distince subsequences - hard - 31/08/2023
+// Distinct subsequences - hard - 31/08/2023
 
 // Memoization
+//     Time Complexity: O(N*M) => Reason: There are N*M states therefore at max ‘N*M’ new problems will be solved.
+//     Space Complexity: O(N*M) + O(N+M) => Reason: We are using a recursion stack space(O(N+M)) and a 2D array ( O(N*M)).
+
 class Solution {
     int memo[][];
     public int numDistinct(String s, String t) {
@@ -28,7 +31,8 @@ class Solution {
 }
 
 // Tabulation
-
+//     Time Complexity: O(N*M) => Reason: There are two nested loops
+//     Space Complexity: O(N*M) => Reason: We are using an external array of size ‘N*M’. Stack Space is eliminated.
 class Solution {
     public int numDistinct(String s, String t) {
         int dp[][]=new int[s.length()+1][t.length()+1];
@@ -52,7 +56,8 @@ class Solution {
 }
 
 // Space Optimized
-
+//     Time Complexity: O(N*M) => Reason: There are two nested loops.
+//     Space Complexity: O(M) => Reason: We are using an external array of size ‘M+1’ to store only one row.
 class Solution {
     
 public int prime =(int)(Math.pow(10,9)+7);

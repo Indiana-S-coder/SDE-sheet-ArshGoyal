@@ -1,0 +1,60 @@
+// Path Sum III - medium - 01/09/2023
+
+// Optimized approach
+class Solution {
+    private int count = 0;
+    public int pathSum(TreeNode root, int targetSum) {
+        Map<Long, Integer> map = new HashMap();
+        map.put(0L, 1);
+        dfs(root, map, 0, targetSum);
+        return count;
+    }
+
+    private void dfs (TreeNode root, Map<Long, Integer> map, long sum, int target) {
+        if (root == null) return;
+
+        sum += root.val;
+
+        count += map.getOrDefault(sum - target, 0);
+
+        map.put(sum, map.getOrDefault(sum, 0) + 1);
+
+        dfs(root.left, map, sum, target);
+
+        // need to remove from last sum
+        dfs(root.right, map, sum, target);
+
+        if (map.get(sum) > 0) map.put(sum, map.get(sum)-1);
+    }
+}
+
+/*
+count = 1
+
+10: 1
+15: 1
+18: 1
+16: 
+
+Build the sum and then cutoff the previously seen nodes that don't make it in the path sum
+
+0: 2
+1: 1
+-1: 1
+
+*/
+
+// Recursion
+
+class Solution {
+    public int pathSum(TreeNode root, int targetSum) {
+        if(root == null) return 0;
+        return helper(root,targetSum) + pathSum(root.left, targetSum) + pathSum(root.right, targetSum);
+    }
+    
+    private int helper(TreeNode root, long sum){
+        if(root == null) return 0;
+        return(sum - root.val == 0 ? 1:0) + helper(root.left, sum - root.val) + helper(root.right, sum - root.val);
+
+    }
+}

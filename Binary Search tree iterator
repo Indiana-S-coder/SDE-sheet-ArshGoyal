@@ -1,0 +1,54 @@
+// Binary search tree Iterator - medium - 01/09/2023
+
+// Straight forward approach - TC=O(1) , SC=O(n)
+class BSTIterator {
+    List<Integer> list = new ArrayList<>();
+    int index = 0;
+    public BSTIterator(TreeNode root) {
+        inorder(root);
+    }
+    public void inorder(TreeNode root){
+        if(root == null){
+            return;
+        }
+        inorder(root.left);
+        list.add(root.val);
+        inorder(root.right);
+    }
+    public int next() {
+        
+        return list.get(index++);
+    }
+    
+    public boolean hasNext() {
+        return index<list.size();
+    }
+}
+
+// Follow up 
+Could you implement next() and hasNext() to run in average O(1) time and use O(h) memory, where h is the height of the tree?
+
+// Average TC=O(1), SC=O(h)
+
+class BSTIterator {
+    Stack<TreeNode> order = new Stack<>();
+    
+    public BSTIterator(TreeNode root) {
+        partialInorder(root);
+    }
+    public void partialInorder(TreeNode root){
+        while(root != null){
+            order.push(root);
+            root = root.left;
+        }
+    }
+    public int next() {
+        TreeNode top = order.pop();
+        partialInorder(top.right);
+        return top.val;
+    }
+    
+    public boolean hasNext() {
+        return !order.isEmpty();
+    }
+}

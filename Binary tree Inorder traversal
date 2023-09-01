@@ -1,0 +1,40 @@
+// Binary tree inorder traversal - easy - 01/09/2023
+
+// Recursive Approach
+class Solution {
+    private void inorder(TreeNode root, List<Integer> ans){
+        if(root==null){
+            return ;
+        }
+
+        inorder(root.left, ans);
+        ans.add(root.val);
+        inorder(root.right, ans);
+    }
+
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> ans = new ArrayList<>();
+
+        inorder(root, ans);
+        return ans;
+    }
+}
+
+// Iterative approach
+public class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode curr = root;
+        while (curr != null || !stack.isEmpty()) {
+            while (curr != null) {
+                stack.push(curr);
+                curr = curr.left;
+            }
+            curr = stack.pop();
+            res.add(curr.val);
+            curr = curr.right;
+        }
+        return res;
+    }
+}

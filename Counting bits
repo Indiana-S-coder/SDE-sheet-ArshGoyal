@@ -1,29 +1,28 @@
 // Counting Bits - easy - 13/08/2023
 
+// Explanation
+A number is expressed as
+half_number<<1 if number is even
+(half_number<<1) +1 if number is odd
+And we know that left shift will add just a zero at end, so same number of bits as half_number if even and add one more bit if odd
+------------------
+
  public int[] countBits(int n) {
 
-        int[] dp = new int[n+1];
-
+        int result[] = new int[n+1];
         if(n == 0){
-            dp[0] = 0;
-            return dp;
+            result[0] = 0;
+            return result;
         }
-        if(n == 1){
-            dp[0]=0;
-            dp[1] = 1;
-            return dp;
-        }
-
-        dp[0] = 0;
-        dp[1] = 1;
+        result[0] = 0;
+        result[1] = 1;
 
         for(int i=2; i<=n; i++){
-            if(i%2 == 0)
-                dp[i] = dp[i/2];
-            else {
-                dp[i] = 1+dp[i/2];
+            if(i%2 == 0){
+                result[i] = result[i/2];
+            }else {
+                result[i] = 1 + result[i/2];
             }
         }
-
-        return dp;
+        return result;
     }

@@ -1,0 +1,75 @@
+// Redundant connection - medium - 01/09/2023
+
+// Brute force
+public int[] findRedundantConnection(int[][] edges) {
+			int e = edges.length; 
+			List<List<Integer>>adj = new LinkedList<>();
+			for (int i=0; i<e+1; i++){
+				adj.add(new LinkedList<>());
+			}
+			for (int[] edge: edges) {
+				int start = edge[0], end = edge[1];
+				adj.get(start).add(end);
+				adj.get(end).add(start);
+				if(dfs(adj, start)) {
+					return edge;
+				}
+			}
+			return new int[]{};
+		}
+		private boolean dfs(List<List<Integer>> adj, int start) {	
+      // helper method to determine  theres cycle in the graph
+			  boolean[] reached = new boolean[adj.size()];
+			  Stack<Integer> stack = new Stack<>();
+			  stack.push(start);
+			  while(!stack.isEmpty()) {
+				int node = stack.pop();
+				if(reached[node]) {
+				   return true;
+				}
+				reached[node] = true;
+				for (int v: adj.get(node)){
+					if(!reached[v]) {
+						  stack.push(v);
+					}
+				 }
+			  }
+			  return false;
+		}
+
+// DSU
+
+class Solution {
+    int[] parent;
+    public int[] findRedundantConnection(int[][] edges) {
+        int n = edges.length;
+        parent = new int[n+1];
+        
+        for(int i=0; i<=n; i++){
+            parent[i] = i;
+        }
+        
+        for(int[] edge: edges){
+            if(find(edge[0]) == find(edge[1])){
+                return edge;
+            }
+            union(edge[0], edge[1]);
+        }
+        return null;
+    }
+    private int find(int node){
+        while(node != parent[node]){
+            node = parent[node];
+        }
+        return node;
+    }
+    
+    private void union(int a, int b){
+        int aroot = find(a);
+        int broot = find(b);
+        
+        if(aroot != broot){
+            parent[broot] = aroot;
+        }
+    }
+}

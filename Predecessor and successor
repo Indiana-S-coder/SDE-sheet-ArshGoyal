@@ -1,0 +1,47 @@
+// Predecessor and successor - easy - 01/09/2023
+
+// Predecessor is the rightmost node of left node
+// Successor is the leftmost node of right node
+
+public static void findPreSuc(Node root, int key)
+{
+    Node curr = root;
+    while(curr != null){
+        if(key <= curr.data){
+            curr = curr.left;
+        }
+        else {
+            pre = curr;
+            curr = curr.right;
+        }
+    }
+    curr = root;
+    while(curr != null){
+        if(key >= curr.data){
+            curr = curr.right;
+        }
+        else {
+            suc = curr;
+            curr = curr.left;
+        }
+    }
+}
+}
+
+// Successor can also be written as 
+Node IS = findInorderSuccessor(root.right);
+public Node findInorderSuccessor(Node root){
+  while(root.left != null){
+    root = root.left;
+  }
+return root;
+}
+
+// Similarily, Predecessor can be written as
+Node IP = findInorderPredecessor(root.left);
+public Node findInorderPredecessor(Node root){
+  while(root.right != null){
+    root = root.right;
+  }
+return root;
+}

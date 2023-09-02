@@ -1,0 +1,47 @@
+// Minimum given distance between two nodes of a binary tree - medium - 02/09/2023
+
+class GfG {
+    public Node lca(Node root, int p, int q) {
+        if(root == null || root.data == p || root.data == q){
+            return root;
+        }
+
+        Node left = lca(root.left, p, q);
+        Node right = lca(root.right, p, q);
+        
+        if(right == null){
+            return left;
+        }
+
+        if(left == null){
+            return right;
+        }
+
+        return root;
+    }
+    
+     int findDistance(Node root, int target, int level) {
+        if (root == null) {
+            return -1;
+        }
+        
+        if (root.data == target) {
+            return level;
+        }
+        
+        int leftDistance = findDistance(root.left, target, level + 1);
+        if (leftDistance != -1) {
+            return leftDistance;
+        }
+        
+        return findDistance(root.right, target, level + 1);
+    }
+    
+    int findDist(Node root, int a, int b) {
+        Node lca = lca(root, a, b);
+        int distA = findDistance(lca, a, 0);
+        int distB = findDistance(lca, b, 0);
+        
+        return distA + distB;
+    }
+}

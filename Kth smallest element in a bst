@@ -1,0 +1,17 @@
+// Kth smallest element in a bst - medium - 02/09/2023
+
+class Solution {
+    int ans=0;
+    int ms=0;
+    public int kthSmallest(TreeNode root, int k) {
+        sol(root,k);
+        return ans;
+    }
+    public void sol(TreeNode root,int k){
+        if(root==null) return;
+        sol(root.left,k);
+        ms++;
+        if(ms==k) ans=root.val;
+        sol(root.right,k);
+    }
+}

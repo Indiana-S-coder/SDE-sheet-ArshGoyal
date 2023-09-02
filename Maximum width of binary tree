@@ -1,0 +1,47 @@
+// Maximum width of binary tree - medium - 02/09/2023
+
+// Approach BFS
+
+class Solution {
+  public int widthOfBinaryTree(TreeNode root) {
+      if(root==null){
+          return 0;
+      }
+        Queue<Pair> q=new LinkedList<>();
+        int ans=0;
+        q.offer(new Pair(root,0));
+        while(!q.isEmpty()){
+            int n=q.size();
+            int min=q.peek().second; //min index at each level (can be different in cases where the first node is null)
+            int first=0;
+            int last=0;
+            for(int i=0;i<n;i++){
+                Pair p=q.poll();
+                int currentIndex=p.second-min;
+                TreeNode node=p.first;
+                if(i==0){
+                    first=currentIndex;
+                }
+                if(i==n-1){
+                    last=currentIndex;
+                }
+                if(node.left!=null){
+                    q.offer(new Pair(node.left,2*currentIndex+1));
+                }
+                if(node.right!=null){
+                    q.offer(new Pair(node.right,2*currentIndex+2));
+                }
+            }
+            ans=Math.max(ans,last-first+1);
+        }
+        return ans;
+    }
+    class Pair{
+        TreeNode first;
+        int second;
+        public Pair(TreeNode first, int second){
+            this.first=first;
+            this.second=second;
+        }
+    }
+}

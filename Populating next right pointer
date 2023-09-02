@@ -1,0 +1,31 @@
+// Populating next right pointer - medium - 02/09/2023
+
+class Solution {
+   public Node connect(Node root) {
+        
+        if (root == null || root.left == null) {
+            return root;
+        }
+        
+        root.left.next = root.right;
+        
+        connect(root.left);
+        connect(root.right);
+        
+        if (root.left.right != null) {
+            bridge(root.left, root.right);
+        }
+        
+        return root;
+        
+    }
+    
+    public void bridge(Node l, Node r) {
+        
+        l.right.next = r.left;
+        
+        if (l.right.right != null) {
+            bridge(l.right, r.left);
+        }
+    }
+}

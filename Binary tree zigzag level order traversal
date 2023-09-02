@@ -1,0 +1,40 @@
+// Binary tree zigzag level order traversal - medium - 02/09/2023
+
+public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+           List<List<Integer>> ans=new LinkedList<>();
+        if(root==null){
+            return ans;
+        }
+        Queue<TreeNode> q=new LinkedList<>();
+        q.add(root);
+        int x=1;
+        while(!q.isEmpty()){
+            List<Integer> l=new ArrayList<>();
+            int c=q.size();
+            for(int i=0;i<c;i++){
+                TreeNode cur=q.poll();
+                l.add(cur.val);
+                if(cur.left!=null){
+                    q.add(cur.left);
+                }
+                if(cur.right!=null){
+                    q.add(cur.right);
+                }
+            }
+            if(x%2==0){
+                List<Integer> ll=new ArrayList<>();
+                for(int i=l.size()-1;i>=0;i--){
+                    ll.add(l.get(i));
+                }
+                ans.add(ll);
+            }
+            else{
+                ans.add(l);
+            }
+            x++;
+            
+            
+        }
+        return ans;
+    }
+}
